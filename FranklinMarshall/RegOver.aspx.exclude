@@ -1,0 +1,18 @@
+<%@ Page Language="VB" MasterPageFile="RCMD_2019.master" AutoEventWireup="false" CodeFile="RegOver.aspx.vb" Inherits="Help" title="Enrollment/Waiver Error" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div class="MainSelections" style="padding-top:40px; text-align:center; font-weight:bold;">
+        CURRENT REGISTRATION PERIOD NOT ACTIVE
+    </div>
+    <div style="padding:40px 20px 0px 20px;" class="SectionHead">
+        <center>
+            <table style="text-align:left;">
+                <tr>
+                    <td>We are sorry, but the Current Registration Period is not Active.</td>
+                </tr>
+                <tr>
+                    <td style="padding-top:20px;">Thank you</td>
+                </tr>
+            </table>
+        </center>
+    </div>
+</asp:Content>

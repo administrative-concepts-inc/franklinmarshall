@@ -1,0 +1,123 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeFile="RCMD_2019.master.vb" Inherits="RCMD_2019_Master" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<head id="Head1" runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>RCM&D</title>
+    <link href="RCMD_StyleSheet_2019.css" rel="stylesheet" type="text/css" runat="server" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Handlee' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css' />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="header-wrapper">
+            <div id="header5" class="header5"  runat="server">   
+                <a class="header5a"  href="Docs/ACE_Privacy.pdf" target="_blank">
+                    Privacy Policy
+                </a>
+                <a class="header5a" href="help.aspx" target="_blank" >
+                    Website Help
+                </a>      
+            </div>
+            <div id="header1" class="header1" runat="server">
+               Franklin & Marshall College
+            </div>
+        </div>
+        <div id="page">
+           <div id="header6" class="header6" runat="server" visible="false"> 
+                <table style="margin-left:auto; margin-right:auto; height:50px;">
+                    <tr>
+                        <td>
+                            <a class="tertiary button" href="Default.aspx">
+                                HOME 
+                            </a>
+                        </td>
+                        <td>
+                            <a class="tertiary button" href="Benefits.aspx">
+                                BENEFITS 
+                            </a>
+                        </td>
+                        <td>
+                            <a class="tertiary button" href="AssistanceServices.aspx">
+                                ASSISTANCE SERVICES 
+                            </a>
+                        </td>
+                        <td>
+                            <a class="tertiary button" href="Claims.aspx">
+                                CLAIMS 
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+           <div id="header2" class="header2" runat="server">
+                <div id="header4" class="header4" runat="server">
+                    <asp:HyperLink ID="hlRCMDlogo" runat="server" CssClass="RCMDLogoBox" ImageUrl="~/Images/RCMD_UNISON_Color_Logo.png" Target="_blank" NavigateUrl="http://www.rcmd.com" Height="60px" />
+                </div>                               
+            </div>   
+            <div id="header3" class="header3" runat="server"> 
+            </div>  
+            <div class="clearfix">
+
+            </div>             
+            
+            <div id="main" style="width:65%; margin-left: auto; margin-right: auto;">
+                <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+                </asp:contentplaceholder>
+            </div>
+             
+    
+            <div id="info-wrapper">    
+                <div id="info" class="container">
+                    <div id="pdf"  style="margin-left:auto; margin-right:auto; padding: 20px 0px 20px 0px;">
+                        <a href="http://www.adobe.com/products/acrobat/readstep2.html" target="blank">
+                            <asp:Table runat="server">
+                                <asp:TableRow>
+                                    <asp:TableCell>
+                                        <img alt="www.adobe.com" src="images/AdobePDF_2019.png" height="50px" />
+                                    </asp:TableCell>
+                                    <asp:TableCell>
+                                        <p style="padding-left:20px; font-size:9pt;">If you are having trouble opening or reading the above forms then you may need to upgrade your <a href="http://www.adobe.com/products/acrobat/readstep2.html" target="blank" >Adobe PDF</a> reader.  This link will direct you to the download site.</p>  
+                                    </asp:TableCell>
+                                </asp:TableRow>
+                            </asp:Table>
+                        </a>                              
+  	                 </div>
+                </div>
+        
+            </div>                
+            <div id="footer-wrapper">    
+                <div id="footer" style="text-align:center; font-size:9pt;">    
+                    <asp:Table runat="server" style="margin-left:auto; margin-right:auto; width:600px;">
+                        <asp:TableRow>
+                            <asp:TableCell>
+                                <a href="http://www.visit-aci.com"><img alt="www.visit-aci.com" src="images/acilogo.png" height="110px;" /></a>
+                            </asp:TableCell>
+                            <asp:TableCell >
+                                <p style="padding-left:30px;">
+                                    <span style="color:#9bbe3a;"><asp:Label id="label4" runat="server">© 2016 Administrative Concepts, Inc.</asp:Label></span>
+                                    Administrative Concepts Inc.<br />P.O. Box 4000&nbsp;&nbsp;&nbsp;&nbsp;Collegeville, PA  19426-9000<br />610.293.9229&nbsp;&nbsp;&nbsp;&nbsp;888.293.9229</p>   
+                            </asp:TableCell>
+                        </asp:TableRow>
+                    </asp:Table>                      
+                   <div style="text-align:right;">
+                        <a href="https://sslanalyzer.comodoca.com/?url=https://secure.visit-aci.com">
+                            <img alt="SSL Certificate" height="80px" src="https://ssl.comodo.com/images/comodo_secure_113x59_transp.png" style="border: 0px; padding:15px;" />
+                        </a>
+                    </div>
+                </div> 
+                       
+            </div>  
+
+        </div>
+        <div id="divTestMode" runat="server" class="TestMode" style="margin-left:auto; margin-right: auto; position:relative; top:0px; padding:15px;" visible="false">
+            Test Mode
+        </div>
+    </form>
+    <asp:SiteMapDataSource ID="smdsWeb" runat="server" SiteMapProvider="smWeb" ShowStartingNode="false"/>
+</body>
+</html>

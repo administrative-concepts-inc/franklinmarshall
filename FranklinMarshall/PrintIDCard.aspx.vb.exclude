@@ -1,0 +1,304 @@
+Imports System.Data
+Imports System.Data.SqlClient
+Imports Common
+Imports System.IO
+Imports ceTe.DynamicPDF
+Imports ceTe.DynamicPDF.Merger
+
+Partial Class FranklinMarshall_IDCard
+    Inherits System.Web.UI.Page
+    Dim TestMode As Boolean = False
+
+    Protected Sub Page_PreInit(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreInit
+        'Me.Title = "RCMD / FMC ID Card"
+    End Sub
+
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        CType(Me.Master.FindControl("header2"), HtmlGenericControl).Style.Add("background-Image", "none")
+        CType(Me.Master.FindControl("header2"), HtmlGenericControl).Style.Add("background-color", "#f4f4f4")
+        CType(Me.Master.FindControl("header2"), HtmlGenericControl).Style.Add("padding-top", "50px")
+        CType(Me.Master.FindControl("header2"), HtmlGenericControl).Style.Add("height", "110px")
+        CType(Me.Master.FindControl("header2"), HtmlGenericControl).InnerHtml = "Franklin & Marshall<br/>Acc. & Health Insurance ID Card"
+    End Sub
+
+    Protected Sub btnNext_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnNext.Click
+        Dim Errors As String = ""
+        If IsDate(txtDOB.Text) = False OrElse CDate(txtDOB.Text) > Now() Then
+            Errors &= "You Must Enter a Valid Birth Date<br />"
+        End If
+        If Trim(txtStudentID.Text) = "" AndAlso (Trim(txtFirstName.Text) = "" OrElse Trim(txtLastName.Text) = "") Then
+            Errors &= "You Must Enter your First Name, Last Name and DOB or your Student ID and DOB<br />"
+        End If
+
+        If Errors <> "" Then
+            divError.Visible = True
+            divError.InnerHtml = Errors
+        Else
+            divError.Visible = False
+            Dim cn As New SqlConnection(ConfigurationManager.ConnectionStrings("csACIweb").ConnectionString)
+            Dim cmd As New SqlCommand
+            cmd.Connection = cn
+
+            cmd.Parameters.Add("@StudentID", SqlDbType.VarChar, 50).Value = Left(txtStudentID.Text, 50)
+            cmd.Parameters.Add("@DOB", SqlDbType.SmallDateTime).Value = CDate(txtDOB.Text)
+
+            Dim FoundCard As Boolean = False
+            Dim bCard() As Byte = Nothing
+            Dim IDcardsService As New IDcards.Service
+
+            If Trim(txtStudentID.Text) <> "" Then
+                Dim da As New SqlDataAdapter(cmd)
+                Dim dt As New DataTable
+
+                If Not FoundCard Then
+                    cn.ConnectionString = ConfigurationManager.ConnectionStrings("csEnrollment").ConnectionString
+
+                    cmd.CommandText = "select top 1 DetailID from MasterHeader as mh join MasterDetail as md on mh.EnrollmentID=md.EnrollmentID where GroupNumber in ('52215415') " &
+                        "and replicate('0', 9 - len(ltrim(rtrim(EnrolleeSSN)))) + ltrim(rtrim(EnrolleeSSN)) = replicate('0', 9 - len(ltrim(rtrim(@StudentID)))) + ltrim(rtrim(@StudentID)) and BirthDate = @DOB and status='a' and EffectiveDate >= '3/1/2022' order by TermDate desc, AccidentOnly"
+                    cmd.CommandTimeout = 0
+                    dt = New DataTable
+                    da.Fill(dt)
+                    If dt.Rows.Count > 0 Then
+                        FoundCard = True
+                        bCard = IDcardsService.GetENIDcard(dt.Rows(0)("DetailID"), IDcards.CardType.FranklinMarshall2022, False, TestMode)
+
+                        ceTe.DynamicPDF.Document.AddLicense("DPS90NEDIAPAICPDTUKjuDxrcAkfLDwTQe8RHLtbg/KDEFM3dVu3Gmi1WdcP1N+QMNXWDd0OSPguaFyql3AaUJMpFHjXSvwk/g5w")
+                        Dim docCombinedPDF As ceTe.DynamicPDF.Merger.MergeDocument = New ceTe.DynamicPDF.Merger.MergeDocument()
+
+                        Dim sPDF As New ceTe.DynamicPDF.Cryptography.RC4128Security
+                        sPDF.AllowAccessibility = True
+                        sPDF.AllowDocumentAssembly = False
+                        sPDF.AllowHighResolutionPrinting = True
+                        sPDF.AllowEdit = False
+                        sPDF.AllowPrint = True
+                        sPDF.AllowCopy = False
+                        sPDF.AllowUpdateAnnotsAndFields = False
+                        sPDF.OwnerPassword = "ACI5599"
+                        docCombinedPDF.Security = sPDF
+
+                        Dim ms As MemoryStream = New MemoryStream(bCard, True)
+                        Dim pdfdoc As ceTe.DynamicPDF.Merger.PdfDocument = New ceTe.DynamicPDF.Merger.PdfDocument(ms, "ACI5599")
+                        docCombinedPDF.Append(pdfdoc)
+                        docCombinedPDF.Append(Server.MapPath("~/Docs") & "/GLMN11230490_5_5_1__Europ Assist ID Card__POWW0003XX0912_3.20.2022.pdf")
+
+                        If Errors <> "" Then
+                            divError.Visible = True
+                            divError.InnerHtml = Errors
+                        Else
+                            docCombinedPDF.DrawToWeb()
+                        End If
+                    End If
+                End If
+            Else
+                cmd.Parameters.Add("@FirstName", SqlDbType.VarChar, 25).Value = Left(txtFirstName.Text, 25)
+                cmd.Parameters.Add("@LastName", SqlDbType.VarChar, 35).Value = Left(txtLastName.Text, 35)
+
+                Dim da As New SqlDataAdapter(cmd)
+                Dim dt As New DataTable
+
+                If Not FoundCard Then
+                    cn.ConnectionString = ConfigurationManager.ConnectionStrings("csEnrollment").ConnectionString
+
+                    cmd.CommandText = "select top 1 DetailID from MasterHeader as mh join MasterDetail as md on mh.EnrollmentID=md.EnrollmentID where GroupNumber in ('52215415') " &
+                        "and ltrim(rtrim(FirstName))=@FirstName and ltrim(rtrim(LastName))=@LastName and BirthDate = @DOB and status='a' and EffectiveDate >= '3/1/2022' order by TermDate desc, AccidentOnly"
+                    cmd.CommandTimeout = 0
+                    dt = New DataTable
+                    da.Fill(dt)
+                    If dt.Rows.Count > 0 Then
+                        FoundCard = True
+                        bCard = IDcardsService.GetENIDcard(dt.Rows(0)("DetailID"), IDcards.CardType.FranklinMarshall2022, False, TestMode)
+
+                        ceTe.DynamicPDF.Document.AddLicense("DPS90NEDIAPAICPDTUKjuDxrcAkfLDwTQe8RHLtbg/KDEFM3dVu3Gmi1WdcP1N+QMNXWDd0OSPguaFyql3AaUJMpFHjXSvwk/g5w")
+                        Dim docCombinedPDF As ceTe.DynamicPDF.Merger.MergeDocument = New ceTe.DynamicPDF.Merger.MergeDocument()
+
+                        Dim sPDF As New ceTe.DynamicPDF.Cryptography.RC4128Security
+                        sPDF.AllowAccessibility = True
+                        sPDF.AllowDocumentAssembly = False
+                        sPDF.AllowHighResolutionPrinting = True
+                        sPDF.AllowEdit = False
+                        sPDF.AllowPrint = True
+                        sPDF.AllowCopy = False
+                        sPDF.AllowUpdateAnnotsAndFields = False
+                        sPDF.OwnerPassword = "ACI5599"
+                        docCombinedPDF.Security = sPDF
+
+                        Dim ms As MemoryStream = New MemoryStream(bCard, True)
+                        Dim pdfdoc As ceTe.DynamicPDF.Merger.PdfDocument = New ceTe.DynamicPDF.Merger.PdfDocument(ms, "ACI5599")
+                        docCombinedPDF.Append(pdfdoc)
+                        docCombinedPDF.Append(Server.MapPath("~/Docs") & "/GLMN11230490_5_5_1__Europ Assist ID Card__POWW0003XX0912_3.20.2022.pdf")
+
+                        If Errors <> "" Then
+                            divError.Visible = True
+                            divError.InnerHtml = Errors
+                        Else
+                            docCombinedPDF.DrawToWeb()
+                        End If
+                    End If
+                End If
+            End If
+            If Not FoundCard Then
+                divError.Visible = True
+                divError.InnerHtml = "Card Not Found."
+            End If
+        End If
+    End Sub
+
+    Protected Sub btnMobileID_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnMobileID.Click
+        Dim Errors As String = ""
+        If IsDate(txtDOB.Text) = False OrElse CDate(txtDOB.Text) > Now() Then
+            Errors &= "You Must Enter a Valid Birth Date<br />"
+        End If
+        If Trim(txtStudentID.Text) = "" AndAlso (Trim(txtFirstName.Text) = "" OrElse Trim(txtLastName.Text) = "") Then
+            Errors &= "You Must Enter your First Name, Last Name and DOB or your Student ID and DOB<br />"
+        End If
+
+        If Errors <> "" Then
+            divError.Visible = True
+            divError.InnerHtml = Errors
+        Else
+            divError.Visible = False
+            Dim cn As New SqlConnection(ConfigurationManager.ConnectionStrings("csACIweb").ConnectionString)
+            Dim cmd As New SqlCommand
+            cmd.Connection = cn
+            Dim da As New SqlDataAdapter(cmd)
+            Dim dt As New DataTable
+
+            cmd.Parameters.Add("@StudentID", SqlDbType.VarChar, 50).Value = Left(txtStudentID.Text, 50)
+            cmd.Parameters.Add("@DOB", SqlDbType.SmallDateTime).Value = CDate(txtDOB.Text)
+
+            Dim FoundCard As Boolean = False
+            Dim bCard() As Byte = Nothing
+            Dim IDcardsService As New IDcards.Service
+
+            If Trim(txtStudentID.Text) <> "" Then
+
+                If Not FoundCard Then
+                    cn.ConnectionString = ConfigurationManager.ConnectionStrings("csEnrollment").ConnectionString
+
+                    cmd.CommandText = "select top 1 DetailID from MasterHeader as mh join MasterDetail as md on mh.EnrollmentID=md.EnrollmentID where GroupNumber in ('52215415') " &
+                        "and replicate('0', 9 - len(ltrim(rtrim(EnrolleeSSN)))) + ltrim(rtrim(EnrolleeSSN)) = replicate('0', 9 - len(ltrim(rtrim(@StudentID)))) + ltrim(rtrim(@StudentID)) and BirthDate = @DOB and status='a' and EffectiveDate >= '3/1/2022' order by TermDate desc, AccidentOnly"
+                    cmd.CommandTimeout = 0
+                    dt = New DataTable
+                    da.Fill(dt)
+                    If dt.Rows.Count > 0 Then
+                        FoundCard = True
+                        bCard = IDcardsService.GetENIDcard(dt.Rows(0)("DetailID"), IDcards.CardType.FranklinMarshall2022, False, TestMode)
+
+                        ceTe.DynamicPDF.Document.AddLicense("DPS90NEDIAPAICPDTUKjuDxrcAkfLDwTQe8RHLtbg/KDEFM3dVu3Gmi1WdcP1N+QMNXWDd0OSPguaFyql3AaUJMpFHjXSvwk/g5w")
+                        Dim bPDF As PdfDocument = New PdfDocument(bCard, "ACI5599")
+                        Dim dPDF As New ceTe.DynamicPDF.Document
+                        If Errors <> "" Then
+                            divError.Visible = True
+                            divError.InnerHtml = Errors
+                        Else
+                            dPDF.Creator = "ACI"
+                            dPDF.Author = "ACI"
+                            dPDF.Title = "Insurance ID Card"
+
+                            Dim sPDF As New ceTe.DynamicPDF.Cryptography.RC4128Security
+                            sPDF.AllowAccessibility = True
+                            sPDF.AllowDocumentAssembly = False
+                            sPDF.AllowHighResolutionPrinting = True
+                            sPDF.AllowEdit = False
+                            sPDF.AllowPrint = True
+                            sPDF.AllowCopy = False
+                            sPDF.AllowUpdateAnnotsAndFields = False
+                            sPDF.OwnerPassword = "ACI5599"
+                            dPDF.Security = sPDF
+
+                            Dim i As Integer = 1
+                            For Each P As ceTe.DynamicPDF.Merger.PdfPage In bPDF.Pages
+                                Dim pPDF As Page = New ceTe.DynamicPDF.Page(265, 200, 0)
+                                pPDF.Elements.Add(New ImportedPageArea(bPDF.GetPage(i), -40, -585))
+                                dPDF.Pages.Add(pPDF)
+                                pPDF = New ceTe.DynamicPDF.Page(265, 200, 0)
+                                pPDF.Elements.Add(New ImportedPageArea(bPDF.GetPage(i), -305, -585))
+                                dPDF.Pages.Add(pPDF)
+                                i += 1
+                            Next
+
+                            Dim ms As New MemoryStream(dPDF.Draw)
+                            Response.Clear()
+                            Response.AddHeader("Content-Disposition", "attachment; filename=FMC_IDcard_Mobile.pdf")
+                            Response.AddHeader("Content-Length", ms.Length.ToString())
+                            Response.ContentType = "application/pdf"
+                            Response.BinaryWrite(ms.ToArray())
+                            Response.Flush()
+                            Response.Close()
+                        End If
+                    End If
+                End If
+            Else
+                cmd.Parameters.Add("@FirstName", SqlDbType.VarChar, 25).Value = Left(txtFirstName.Text, 25)
+                cmd.Parameters.Add("@LastName", SqlDbType.VarChar, 35).Value = Left(txtLastName.Text, 35)
+
+                If Not FoundCard Then
+                    cn.ConnectionString = ConfigurationManager.ConnectionStrings("csEnrollment").ConnectionString
+
+                    cmd.CommandText = "select top 1 DetailID from MasterHeader as mh join MasterDetail as md on mh.EnrollmentID=md.EnrollmentID where GroupNumber in ('52215415') " &
+                        "and ltrim(rtrim(FirstName))=@FirstName and ltrim(rtrim(LastName))=@LastName " &
+                        "and BirthDate = @DOB and status='a' and EffectiveDate >= '3/1/2022' order by TermDate desc, AccidentOnly"
+                    cmd.CommandTimeout = 0
+                    dt = New DataTable
+                    da.Fill(dt)
+                    If dt.Rows.Count > 0 Then
+                        FoundCard = True
+                        bCard = IDcardsService.GetENIDcard(dt.Rows(0)("DetailID"), IDcards.CardType.FranklinMarshall2022, False, TestMode)
+
+                        ceTe.DynamicPDF.Document.AddLicense("DPS90NEDIAPAICPDTUKjuDxrcAkfLDwTQe8RHLtbg/KDEFM3dVu3Gmi1WdcP1N+QMNXWDd0OSPguaFyql3AaUJMpFHjXSvwk/g5w")
+                        Dim bPDF As PdfDocument = New PdfDocument(bCard, "ACI5599")
+                        Dim dPDF As New ceTe.DynamicPDF.Document
+                        If Errors <> "" Then
+                            divError.Visible = True
+                            divError.InnerHtml = Errors
+                        Else
+                            dPDF.Creator = "ACI"
+                            dPDF.Author = "ACI"
+                            dPDF.Title = "Insurance ID Card"
+
+                            Dim sPDF As New ceTe.DynamicPDF.Cryptography.RC4128Security
+                            sPDF.AllowAccessibility = True
+                            sPDF.AllowDocumentAssembly = False
+                            sPDF.AllowHighResolutionPrinting = True
+                            sPDF.AllowEdit = False
+                            sPDF.AllowPrint = True
+                            sPDF.AllowCopy = False
+                            sPDF.AllowUpdateAnnotsAndFields = False
+                            sPDF.OwnerPassword = "ACI5599"
+                            dPDF.Security = sPDF
+
+                            Dim i As Integer = 1
+                            For Each P As ceTe.DynamicPDF.Merger.PdfPage In bPDF.Pages
+                                Dim pPDF As Page = New ceTe.DynamicPDF.Page(265, 200, 0)
+                                pPDF.Elements.Add(New ImportedPageArea(bPDF.GetPage(i), -40, -585))
+                                dPDF.Pages.Add(pPDF)
+                                pPDF = New ceTe.DynamicPDF.Page(265, 200, 0)
+                                pPDF.Elements.Add(New ImportedPageArea(bPDF.GetPage(i), -305, -585))
+                                dPDF.Pages.Add(pPDF)
+                                i += 1
+                            Next
+
+                            Dim ms As New MemoryStream(dPDF.Draw)
+                            Response.Clear()
+                            Response.AddHeader("Content-Disposition", "attachment; filename=FMC_IDcard_Mobile.pdf")
+                            Response.AddHeader("Content-Length", ms.Length.ToString())
+                            Response.ContentType = "application/pdf"
+                            Response.BinaryWrite(ms.ToArray())
+                            Response.Flush()
+                            Response.Close()
+                        End If
+
+                    End If
+                End If
+            End If
+            If Not FoundCard Then
+                divError.Visible = True
+                divError.InnerHtml = "Card Not Found."
+            End If
+        End If
+    End Sub
+
+    Protected Sub btnPrev_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPrev.Click
+        Response.Redirect("~/Default.aspx")
+    End Sub
+End Class

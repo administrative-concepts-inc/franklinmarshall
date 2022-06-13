@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://idcards.visit-aci.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://idcards.visit-aci.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://idcards.visit-aci.com/">
+      <s:element name="GetIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dt">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="CardType">
+        <s:restriction base="s:string">
+          <s:enumeration value="ACSI" />
+          <s:enumeration value="Alma1011" />
+          <s:enumeration value="Alvernia0809" />
+          <s:enumeration value="Augsburg1011" />
+          <s:enumeration value="AUIS2015" />
+          <s:enumeration value="BrynMawr0809" />
+          <s:enumeration value="Bucknell2016" />
+          <s:enumeration value="Calvin0910" />
+          <s:enumeration value="Carleton0809" />
+          <s:enumeration value="CCC1213" />
+          <s:enumeration value="CIRdemo0809" />
+          <s:enumeration value="Cooper1112" />
+          <s:enumeration value="CSRYE2014" />
+          <s:enumeration value="DemoCompany" />
+          <s:enumeration value="DenverSeminary0809" />
+          <s:enumeration value="DWC0910" />
+          <s:enumeration value="EDMC0809" />
+          <s:enumeration value="Elon0714" />
+          <s:enumeration value="FIUSAB0910" />
+          <s:enumeration value="Fordham0809" />
+          <s:enumeration value="GMC1112" />
+          <s:enumeration value="Haverford0809" />
+          <s:enumeration value="HIIPTS" />
+          <s:enumeration value="HNU1112" />
+          <s:enumeration value="HSG08" />
+          <s:enumeration value="ISA2016" />
+          <s:enumeration value="ISM2007" />
+          <s:enumeration value="ISP2010" />
+          <s:enumeration value="ISPLan1213" />
+          <s:enumeration value="Juilliard0910" />
+          <s:enumeration value="LIU0809" />
+          <s:enumeration value="Loyola2015" />
+          <s:enumeration value="Marygrove0910" />
+          <s:enumeration value="MountStJoe1213" />
+          <s:enumeration value="MSM1112" />
+          <s:enumeration value="Mua2013" />
+          <s:enumeration value="NSU0809" />
+          <s:enumeration value="Nwnaz1011" />
+          <s:enumeration value="Oakwood1011" />
+          <s:enumeration value="OERYE2015" />
+          <s:enumeration value="Plymouth0910" />
+          <s:enumeration value="Polytec0809" />
+          <s:enumeration value="RCMD2013" />
+          <s:enumeration value="RMC0910" />
+          <s:enumeration value="Saba2013" />
+          <s:enumeration value="SecLife" />
+          <s:enumeration value="SJCNY0910" />
+          <s:enumeration value="StAndrews1213" />
+          <s:enumeration value="Stevenson2016" />
+          <s:enumeration value="StCatherine0809" />
+          <s:enumeration value="StMary0910" />
+          <s:enumeration value="StOlaf0809" />
+          <s:enumeration value="StOlaf0910" />
+          <s:enumeration value="StScholastica0910" />
+          <s:enumeration value="Towson2015" />
+          <s:enumeration value="Troy1213" />
+          <s:enumeration value="UOCT1213" />
+          <s:enumeration value="UoDM0809" />
+          <s:enumeration value="Villanova0809" />
+          <s:enumeration value="VMI2014" />
+          <s:enumeration value="WTS1011" />
+          <s:enumeration value="WVU2015" />
+          <s:enumeration value="Tufts2017" />
+          <s:enumeration value="CAPA2017" />
+          <s:enumeration value="Mountbatten2018" />
+          <s:enumeration value="GreatAuPair2019" />
+          <s:enumeration value="UMBC2019" />
+          <s:enumeration value="CFChina2021" />
+          <s:enumeration value="Linfield2021" />
+          <s:enumeration value="SEMO2021" />
+          <s:enumeration value="MSUTexas2021" />
+          <s:enumeration value="SCAD2021" />
+          <s:enumeration value="TJSL2022" />
+          <s:enumeration value="FranklinMarshall2022" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOffsetIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dt">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TopOffset" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOffsetIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOffsetIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrollmentID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWPIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPdata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrollmentID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPdataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetISPWPdataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrollmentID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetISPWPIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPDepIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDs" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPDepIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWPDepIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DetailID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetENIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPENIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DetailID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPENIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetISPENIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENDepIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDs" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENDepIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetENDepIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetARIDcard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrolleeID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tCard" type="tns:CardType" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetARIDcardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetARIDcardResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrollmentID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWPIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWPIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrollmentID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPWPIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetISPWPIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DetailID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetENIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetENIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCompLocENIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DetailID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="RestrictLoc" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="UserID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompanyID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCompLocENIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCompLocENIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPENIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DetailID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetISPENIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetISPENIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetARIDcardGPNO">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EnrolleeID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UseCardStock" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestMode" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetARIDcardGPNOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetARIDcardGPNOResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="bCard" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="Errors" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TemplateCheck">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TemplateCheckResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TemplateCheckResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gpno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOffsetIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOffsetIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetOffsetIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOffsetIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWPIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWPIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetWPIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWPIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPdataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetISPWPdata" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPdataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetISPWPdataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetISPWPIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetISPWPIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWPDepIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWPDepIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetWPDepIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWPDepIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetENIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetENIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetENIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetENIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetISPENIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetISPENIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetISPENIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetISPENIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetENDepIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetENDepIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetENDepIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetENDepIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetARIDcardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetARIDcard" />
+  </wsdl:message>
+  <wsdl:message name="GetARIDcardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetARIDcardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWPIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWPIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetWPIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWPIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetISPWPIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetISPWPIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetISPWPIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetENIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetENIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetENIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetENIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCompLocENIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCompLocENIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetCompLocENIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCompLocENIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetISPENIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetISPENIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetISPENIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetISPENIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetARIDcardGPNOSoapIn">
+    <wsdl:part name="parameters" element="tns:GetARIDcardGPNO" />
+  </wsdl:message>
+  <wsdl:message name="GetARIDcardGPNOSoapOut">
+    <wsdl:part name="parameters" element="tns:GetARIDcardGPNOResponse" />
+  </wsdl:message>
+  <wsdl:message name="TemplateCheckSoapIn">
+    <wsdl:part name="parameters" element="tns:TemplateCheck" />
+  </wsdl:message>
+  <wsdl:message name="TemplateCheckSoapOut">
+    <wsdl:part name="parameters" element="tns:TemplateCheckResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="GetIDcard">
+      <wsdl:input message="tns:GetIDcardSoapIn" />
+      <wsdl:output message="tns:GetIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOffsetIDcard">
+      <wsdl:input message="tns:GetOffsetIDcardSoapIn" />
+      <wsdl:output message="tns:GetOffsetIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcard">
+      <wsdl:input message="tns:GetWPIDcardSoapIn" />
+      <wsdl:output message="tns:GetWPIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPdata">
+      <wsdl:input message="tns:GetISPWPdataSoapIn" />
+      <wsdl:output message="tns:GetISPWPdataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcard">
+      <wsdl:input message="tns:GetISPWPIDcardSoapIn" />
+      <wsdl:output message="tns:GetISPWPIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWPDepIDcard">
+      <wsdl:input message="tns:GetWPDepIDcardSoapIn" />
+      <wsdl:output message="tns:GetWPDepIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcard">
+      <wsdl:input message="tns:GetENIDcardSoapIn" />
+      <wsdl:output message="tns:GetENIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcard">
+      <wsdl:input message="tns:GetISPENIDcardSoapIn" />
+      <wsdl:output message="tns:GetISPENIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetENDepIDcard">
+      <wsdl:input message="tns:GetENDepIDcardSoapIn" />
+      <wsdl:output message="tns:GetENDepIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcard">
+      <wsdl:input message="tns:GetARIDcardSoapIn" />
+      <wsdl:output message="tns:GetARIDcardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcardGPNO">
+      <wsdl:input message="tns:GetWPIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetWPIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcardGPNO">
+      <wsdl:input message="tns:GetISPWPIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetISPWPIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcardGPNO">
+      <wsdl:input message="tns:GetENIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetENIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCompLocENIDcardGPNO">
+      <wsdl:input message="tns:GetCompLocENIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetCompLocENIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcardGPNO">
+      <wsdl:input message="tns:GetISPENIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetISPENIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcardGPNO">
+      <wsdl:input message="tns:GetARIDcardGPNOSoapIn" />
+      <wsdl:output message="tns:GetARIDcardGPNOSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TemplateCheck">
+      <wsdl:input message="tns:TemplateCheckSoapIn" />
+      <wsdl:output message="tns:TemplateCheckSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOffsetIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetOffsetIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetWPIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPdata">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetISPWPdata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetISPWPIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPDepIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetWPDepIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetENIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetISPENIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENDepIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetENDepIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcard">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetARIDcard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetWPIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetISPWPIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompLocENIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetCompLocENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetISPENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcardGPNO">
+      <soap:operation soapAction="http://idcards.visit-aci.com/GetARIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TemplateCheck">
+      <soap:operation soapAction="http://idcards.visit-aci.com/TemplateCheck" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOffsetIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetOffsetIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetWPIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPdata">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetISPWPdata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetISPWPIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPDepIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetWPDepIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetENIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetISPENIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENDepIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetENDepIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcard">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetARIDcard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWPIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetWPIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPWPIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetISPWPIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetENIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompLocENIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetCompLocENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetISPENIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetISPENIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetARIDcardGPNO">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/GetARIDcardGPNO" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TemplateCheck">
+      <soap12:operation soapAction="http://idcards.visit-aci.com/TemplateCheck" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://idcards.visit-aci.com:8080/service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://idcards.visit-aci.com:8080/service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

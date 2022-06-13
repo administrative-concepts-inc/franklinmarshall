@@ -1,0 +1,150 @@
+Imports Microsoft.VisualBasic
+
+Public Class YourPay
+    Public Shared Function ProcessOrder(ByVal ypStoreNum As String, ByVal ypCert As String, ByVal OrderType As String, ByVal Mode As String, _
+    ByVal CardNumber As String, ByVal ExpMonth As String, ByVal ExpYear As String, ByVal CardCVV2 As String, ByVal StreetNum As String, _
+    ByVal Zip As String, ByVal Address1 As String, ByVal City As String, ByVal State As String, ByVal CardHolder As String, _
+    ByVal TotalCharge As Double, ByVal EnrollmentID As String, ByVal IPaddr As String) As ypResp
+        Dim LPTxn As LinkPointTransaction.LinkPointTxn
+        ' create order
+        Dim op As LinkPointTransaction.LPOrderPart
+        Dim order As LinkPointTransaction.LPOrderPart
+
+        order = LinkPointTransaction.LPOrderFactory.createOrderPart("order")
+        ' create a part we will use to build the order
+        op = LinkPointTransaction.LPOrderFactory.createOrderPart()
+
+        ' Build 'orderoptions'
+        op.put("result", Mode) ' set result to GOOD, DECLINE, DUPLICATE, or LIVE
+        op.put("ordertype", OrderType)
+        ' add 'orderoptions to order
+        order.addPart("orderoptions", op)
+
+        ' Build 'merchantinfo'
+        op.clear()
+        op.put("configfile", ypStoreNum)
+        ' add 'merchantinfo to order
+        order.addPart("merchantinfo", op)
+
+        ' Build 'creditcard'
+        op.clear()
+        op.put("cardnumber", CardNumber)
+        op.put("cardexpmonth", ExpMonth)
+        op.put("cardexpyear", Right(ExpYear, 2))
+        op.put("cvmvalue", CardCVV2)
+        If Len(CardCVV2) > 0 Then
+            op.put("cvmindicator", "provided")
+        Else
+            op.put("cvmindicator", "not_provided")
+        End If
+        ' add 'creditcard to order
+        order.addPart("creditcard", op)
+
+        ' Build 'billing'
+        op.clear()
+        op.put("addrnum", StreetNum)
+        op.put("zip", Zip)
+        op.put("address1", Address1)
+        'op.put("address2", baddress2)
+        op.put("city", City)
+        op.put("state", State)
+        op.put("name", CardHolder)
+        'op.put("email", Email)
+
+        ' add 'billing to order
+        order.addPart("billing", op)
+
+        ' Build 'payment'
+        op.clear()
+        op.put("chargetotal", TotalCharge)
+        ' add 'payment to order
+        order.addPart("payment", op)
+
+        ' Build 'transaction'
+        op.clear()
+        op.put("transactionorigin", "ECI")
+        op.put("ip", IPaddr)
+        ' add 'transaction to order
+        order.addPart("transactiondetails", op)
+
+        ' Build 'notes'
+        op.clear()
+        op.put("comments", "EnrollmentID: " & EnrollmentID)
+        ' add 'notes to order
+        order.addPart("notes", op)
+
+
+        ' create transaction object	
+        LPTxn = New LinkPointTransaction.LinkPointTxn()
+
+        ' get outgoing XML from 'order' object
+        Dim outXml As String = order.toXML()
+
+        ' Call LPTxn
+        Dim resp As String = LPTxn.send(ypCert, "secure.linkpt.net", 1129, outXml)
+
+        'Store transaction data on Session and redirect
+        'Session("outXml") = outXml
+
+        ProcessOrder = ParseResponse(resp)
+    End Function
+
+    Public Shared Function ParseResponse(ByVal rsp As String) As ypResp
+        Dim r As New ypResp
+        r.Response = rsp
+        r.Time = ParseTag("r_time", rsp)
+        r.Ref = ParseTag("r_ref", rsp)
+        r.Approved = ParseTag("r_approved", rsp)
+        r.Code = ParseTag("r_code", rsp)
+        r.AuthResponse = ParseTag("r_authresponse", rsp)
+        r.ErrorText = ParseTag("r_error", rsp)
+        r.OrderNum = ParseTag("r_ordernum", rsp)
+        r.Message = ParseTag("r_message", rsp)
+        r.Score = ParseTag("r_score", rsp)
+        r.TDate = ParseTag("r_tdate", rsp)
+        r.AVS = ParseTag("r_avs", rsp)
+        r.FraudCode = ParseTag("r_fraudCode", rsp)
+
+        ParseResponse = r
+    End Function
+
+    Protected Shared Function ParseTag(ByVal tag As String, ByVal rsp As String) As String
+        Dim sb As String
+        Dim idxSt, idxEnd As Integer
+
+        sb = "<" & tag & ">"
+        idxSt = -1
+        idxEnd = -1
+
+        idxSt = rsp.IndexOf(sb)
+        If -1 = idxSt Then
+            Return ""
+        End If
+
+        idxSt += sb.Length
+        sb = "</" & tag & ">"
+        idxEnd = rsp.IndexOf(sb, idxSt)
+
+        If -1 = idxEnd Then
+            Return ""
+        End If
+
+        ParseTag = rsp.Substring(idxSt, idxEnd - idxSt)
+    End Function
+End Class
+
+Public Class ypResp
+    Public Response As String
+    Public Time As String
+    Public Ref As String
+    Public Approved As String
+    Public Code As String
+    Public AuthResponse As String
+    Public ErrorText As String
+    Public OrderNum As String
+    Public Message As String
+    Public Score As String
+    Public TDate As String
+    Public AVS As String
+    Public FraudCode As String
+End Class
